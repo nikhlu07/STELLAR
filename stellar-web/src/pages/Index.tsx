@@ -1,5 +1,7 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from '../components/ui/button';
 
 const Index = () => {
     React.useEffect(() => {
@@ -40,11 +42,25 @@ const Index = () => {
             }
         });
 
+        // Header scroll effect
+        const header = document.querySelector('header');
+        const handleScroll = () => {
+            if (header) {
+                if (window.scrollY > 10) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            }
+        };
+        window.addEventListener('scroll', handleScroll);
+
         return () => {
             if (document.head.contains(style)) {
                 document.head.removeChild(style);
             }
             hiddenElements.forEach(el => observer.unobserve(el));
+            window.removeEventListener('scroll', handleScroll);
         };
     }, []);
 
@@ -58,6 +74,12 @@ const Index = () => {
                     background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
                     background-size: 20px 20px;
                     background-position: 0 0, 10px 10px;
+                }
+                header.scrolled {
+                    background-color: rgba(255, 255, 255, 0.8);
+                    -webkit-backdrop-filter: blur(10px);
+                    backdrop-filter: blur(10px);
+                    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
                 }
                 .font-lufga {
                     font-family: 'Lufga', sans-serif;
@@ -139,7 +161,7 @@ const Index = () => {
             <div className="overflow-x-hidden">
                 <div className="relative z-10">
                     {/* Header */}
-                    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-filter backdrop-blur-lg shadow-sm">
+                    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out">
                         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                             <div className="flex items-center space-x-3">
                                 {/* Logo */}
@@ -153,7 +175,7 @@ const Index = () => {
                                 <a href="#roadmap" className="hover:electric-violet-text transition-colors duration-300">Roadmap</a>
                                 <a href="#tokenomics" className="hover:electric-violet-text transition-colors duration-300">Tokenomics</a>
                             </nav>
-                            <a href="#" className="hidden md:block electric-violet-bg text-white font-bold py-2 px-6 rounded-lg hover:bg-opacity-90 transition-transform duration-300 transform hover:scale-105">Launch App</a>
+                            <Link to="/connect" className="hidden md:block electric-violet-bg text-white font-bold py-2 px-6 rounded-lg hover:bg-opacity-90 transition-transform duration-300 transform hover:scale-105">Launch App</Link>
                             <button className="md:hidden text-gray-900">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
@@ -178,9 +200,11 @@ const Index = () => {
                                         <a href="#mission" className="w-full sm:w-auto electric-violet-bg text-white font-bold py-3 px-8 rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 glow-effect-soft">
                                             Discover How
                                         </a>
-                                        <a href="#" className="w-full sm:w-auto bg-transparent border-2 electric-violet-border electric-violet-text font-bold py-3 px-8 rounded-lg hover:bg-violet-50 transition-colors duration-300">
-                                            Launch App
-                                        </a>
+
+
+                                        <Button asChild className="w-full sm:w-auto bg-transparent border-2 electric-violet-border electric-violet-text font-bold py-3 px-8 rounded-lg hover:bg-violet-50 transition-colors duration-300" size="lg">
+                                            <Link to="/connect">Launch App</Link>
+                                        </Button>
                                     </div>
                                 </div>
                                 <div className="hidden lg:flex items-center justify-center -mt-16 lg:-mt-0">
@@ -466,9 +490,9 @@ const Index = () => {
                                     <h2 className="font-lufga text-3xl md:text-4xl font-bold">Join The Mission</h2>
                                     <p className="mt-4 text-gray-600 max-w-2xl mx-auto">Whether you're a farmer seeking fair credit or a technologist ready to build the future of finance, your journey starts here.</p>
                                     <div className="mt-8">
-                                         <a href="#" className="electric-violet-bg text-white font-bold py-3 px-8 rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 glow-effect-soft">
+                                         <Link to="/connect" className="electric-violet-bg text-white font-bold py-3 px-8 rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 glow-effect-soft">
                                             Launch The STELLAR App
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

@@ -12,7 +12,7 @@ A multi-page web application that turns farms into bankable assets through satel
 - **Error**: `#EF4444` for failed states
 
 ### Typography
-- **Headings**: Orbitron (500, 700, 900) - Futuristic command center aesthetic
+- **Headings**: Lufga (500, 700, 900) - Futuristic command center aesthetic
 - **Body & UI**: Space Mono (400, 700) - Monospaced for data-rich readability
 
 ### Visual Effects

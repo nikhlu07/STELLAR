@@ -1,13 +1,24 @@
-import { Link, useLocation } from "react-router-dom";
-import { Satellite, User } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { User } from "lucide-react";
 import { Button } from "./ui/button";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { cn } from "../lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { useUser } from "../contexts/UserContext";
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const isHome = location.pathname === "/";
   const [scrolled, setScrolled] = useState(false);
+  const { userType, setUserType } = useUser();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +31,11 @@ const Header = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const handleLogout = () => {
+    setUserType(null);
+    navigate("/connect");
+  };
 
   return (
     <header
@@ -35,49 +51,78 @@ const Header = () => {
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2 group">
           <div className="relative">
-            <Satellite className="h-8 w-8 text-primary transition-transform group-hover:rotate-12" />
-            <div className="absolute inset-0 animate-ping opacity-20">
-              <Satellite className="h-8 w-8 text-primary" />
-            </div>
+            <img src="/logo.svg" className="h-10 w-10" alt="Stellar Logo" />
           </div>
-          <span className="text-2xl font-bold text-gradient-violet">
-            STELLAR
-          </span>
         </Link>
 
-        {!isHome && (
+        {!isHome && userType && (
           <nav className="hidden md:flex items-center gap-6">
-            <Link
-              to="/marketplace"
-              className="text-sm font-medium transition-colors hover:text-primary"
-            >
-              Marketplace
-            </Link>
-            <Link
-              to="/farmer"
-              className="text-sm font-medium transition-colors hover:text-primary"
-            >
-              Farmer Portal
-            </Link>
-            <Link
-              to="/verifier"
-              className="text-sm font-medium transition-colors hover:text-primary"
-            >
-              Verifier Hub
-            </Link>
-            <Link
-              to="/lender"
-              className="text-sm font-medium transition-colors hover:text-primary"
-            >
-              Lender Intelligence
-            </Link>
+            {userType === 'farmer' && (
+              <>
+                <Link
+                  to="/marketplace"
+                  className="text-sm font-medium transition-colors hover:text-primary"
+                >
+                  Marketplace
+                </Link>
+                <Link
+                  to="/farmer"
+                  className="text-sm font-medium transition-colors hover:text-primary"
+                >
+                  Farmer Portal
+                </Link>
+              </>
+            )}
+            {userType === 'lender' && (
+              <>
+                <Link
+                  to="/marketplace"
+                  className="text-sm font-medium transition-colors hover:text-primary"
+                >
+                  Marketplace
+                </Link>
+                <Link
+                  to="/lender"
+                  className="text-sm font-medium transition-colors hover:text-primary"
+                >
+                  Lender Intelligence
+                </Link>
+              </>
+            )}
+            {userType === 'verifier' && (
+              <>
+                <Link
+                  to="/marketplace"
+                  className="text-sm font-medium transition-colors hover:text-primary"
+                >
+                  Marketplace
+                </Link>
+                <Link
+                  to="/verifier"
+                  className="text-sm font-medium transition-colors hover:text-primary"
+                >
+                  Verifier Operations
+                </Link>
+              </>
+            )}
           </nav>
         )}
 
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon">
-            <User className="h-5 w-5" />
-          </Button>
+          {userType && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <User className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
     </header>
