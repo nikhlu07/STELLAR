@@ -1,180 +1,220 @@
- Project STELLAR: The Comprehensive Blueprint
-Our Vision: To build the foundational trust layer for the future of agricultural finance, creating a world where every farmer's hard work is a bankable asset, starting in Punjab and scaling to the globe.
+# STELLAR
 
-Project Name: STELLAR
-Stands For: Satellite Trusted Evaluation & Lending Ledger Architecture Record.
+**Satellite Trusted Evaluation & Lending Ledger Architecture Record**
 
-1. The Problem: The Farmer's Debt Cycle (The "Why")
-In the fertile lands of Punjab, a farmer's reality is a paradox of wealth and debt. While their land is productive, their access to timely, fair capital is virtually non-existent. A farmer needing ₹50,000 for seeds before the sowing season faces a broken system:
+> **Vision:** Build the foundational trust layer for agricultural finance so every farmer’s labor becomes a bankable asset — starting in Punjab, scaling global.
 
-Banks are Slow & Demanding: They require extensive land records (patwari documents), a formal credit history (which the farmer lacks), and a multi-week approval process that doesn't match the urgent timelines of agriculture.
+---
 
-The Moneylender (Arhtiya) Trap: The only alternative is the local moneylender, who provides instant cash but at crippling interest rates (often 3-5% per month). One bad harvest or medical emergency can spiral into a debt cycle that lasts for generations.
+## 🚜 One-line summary
 
-The core issue is a lack of trustworthy, real-time data. The farmer's greatest asset—their productive land and future harvest—is invisible and illiquid to the formal financial world. STELLAR is built to solve this data and trust gap.
+STELLAR turns farms into verifiable, on-chain creditable assets by combining satellite AI analytics, a human DePIN verifier network, and a cryptographic timestamp from Creditcoin’s CTC-0 oracle — unlocking cheaper, faster loans for smallholder farmers.
 
-2. The Solution: A Multi-Layered Oracle for Bulletproof Trust (The "How")
-STELLAR creates a verifiable, data-rich profile for a farm, making it a safe, attractive asset for any lender. This is achieved through three layers of analysis.
+---
 
-Layer 1: The Core Engine (Automated Data Analysis)
+## Why this matters (The Problem)
 
-Historical Analysis: We pull 5+ years of public satellite imagery (from Sentinel-2 and Landsat missions) for the farm's exact GPS coordinates. Our AI model analyzes the historical Normalized Difference Vegetation Index (NDVI) to establish a baseline of the farm's consistency, seasonality, and historical productivity.
+Small farmers lack timely, fair access to working capital. Banks are slow and documentation-heavy; moneylenders charge crippling rates. The root cause: **productive land and predictable harvests are invisible to lenders**. STELLAR makes farm productivity visible, verifiable, and bankable.
 
-Real-Time Analysis: We cross-reference current satellite images with live data from weather oracles (for drought/flood warnings in the specific district) and price oracles (for current crop prices at the local Mandi). This creates a live "health and value" snapshot.
+---
 
-Layer 2: The Trust Layer (The Human Verification DePIN)
+## High-level solution
 
-The Verifier Network: We create a Decentralized Physical Infrastructure Network (DePIN) of local, on-the-ground "Verifiers." These could be agricultural students, retired farmers, or trusted members of local co-ops.
+A layered trust stack:
 
-The Trust Circle Mechanism: To prevent fraud, a Verifier cannot act alone. They must join or form a "Trust Circle" of 3-5 members. To activate the circle, each member must stake a meaningful amount of CTC. If any member of the circle is proven to have submitted a fraudulent report, the entire circle's stake is slashed. This creates powerful social and economic pressure for honesty.
+1. **Layer 1 — Core Engine (Automated Data Analysis)**
 
-Layer 3: The Security Stamp (The Unforgeable Proof)
+   * Historical NDVI and satellite time-series (Sentinel-2, Landsat) to build a 5+ year productivity baseline.
+   * Real-time overlay of weather and local mandi price oracles to compute a live farm health & value score.
 
-CTC-0 Integration: For the highest level of trust, every final report submitted by a Verifier is sent to the Creditcoin CTC-0 satellite's oracle.
+2. **Layer 2 — Trust Layer (DePIN Verifier Network)**
 
-The oracle returns a cryptographic signature that provides an immutable, on-chain timestamp and geolocation proof. This proves the verification happened at a specific place and time, making the report data unforgeable and solving the problem of "old data" fraud.
+   * Local verifiers (students, retired farmers, co-op members) form *Trust Circles* (3–5 members) and stake CTC.
+   * Reports are geotagged, photo-backed, and cross-checked by the Circle; slashing disincentivizes fraud.
 
-3. User Journeys
-The Farmer (Baljeet):
+3. **Layer 3 — Security Stamp (CTC-0)**
 
-Onboarding: Baljeet registers on the STELLAR app with his phone number and marks the boundaries of his 5-acre farm on a map.
+   * Verifier reports optionally get timestamped and geolocated by the CTC-0 satellite oracle for an immutable, on-chain proof.
 
-Credit Profile Built: STELLAR's engine automatically performs the Layer 1 analysis, creating his initial farm profile. A local Verifier is dispatched for the Layer 2/3 check.
+---
 
-Loan Access: Once verified, his dashboard shows he has a credit line of ₹75,000. He draws ₹50,000 for seeds, which is instantly disbursed to his connected bank account/wallet.
+## Core components & repo layout
 
-Repayment: After a successful harvest and sale, he repays the loan directly through the app.
+```
+/ (root)
+├─ contracts/
+│  ├─ StellarFarmNFT.sol
+│  ├─ StellarVerifierRegistry.sol
+│  └─ StellarLendingPool.sol
+├─ backend/
+│  ├─ data-processor/      # satellite + NDVI pipeline
+│  ├─ oracle-integrator/   # weather, price, and CTC-0 mock
+│  └─ credal-api/          # Creditcoin Credal API adapter
+├─ frontend/
+│  ├─ apps/                # farmer, verifier, lender dashboards (Next.js + Tailwind)
+│  └─ components/
+├─ infra/                  # docker-compose, terraform templates (optional)
+├─ docs/                   # architecture diagrams, hackathon pitch assets
+└─ README.md
+```
 
-Building History: This entire successful loan cycle is recorded on the Creditcoin ledger via the Credal API, increasing his credit score and unlocking better terms for his next loan.
+---
 
-The Verifier (Priya):
+## Tech stack
 
-Staking: Priya, an agriculture student, forms a Trust Circle with four classmates. They each stake 100 CTC into the circle's smart contract to become active Verifiers.
+* **Smart contracts:** Solidity, OpenZeppelin (Creditcoin testnet)
+* **Backend:** Node.js (Express) + Python for satellite processing
+* **Frontend:** Next.js, React, Ethers.js, Tailwind CSS (mobile-first)
+* **Data sources:** Sentinel-2, Landsat (via Sentinel Hub), weather & mandi price oracles
+* **Identity & ledger:** Creditcoin (Credal API) + CTC token economics
+* **Storage:** IPFS for images and metadata hashes
 
-Receiving a Job: She receives a notification for a verification job 5km away.
+---
 
-Verification: She visits Baljeet's farm, uses the app to take geotagged photos, and confirms the automated data from Layer 1 is correct.
+## Contracts (quick summary)
 
-Confirmation: Her report is timestamped by the CTC-0 oracle. Upon successful submission, she and her circle members receive a fee paid in CTC.
+* **StellarFarmNFT.sol** — ERC-721 where each token = verified farm. Metadata stores farm geometry, NDVI summary hash, verification history.
+* **StellarVerifierRegistry.sol** — manages trust circles, staking, reputation, job assignments, and slashing logic.
+* **StellarLendingPool.sol** — USDC pool that issues loans, manages collateralized farm NFTs, interest accounting, and repayments.
 
-4. Technical Architecture & Tech Stack
-Smart Contracts (Solidity, OpenZeppelin on Creditcoin Testnet):
+> *Note:* Include unit tests, access control (roles), and upgradeability strategy (Proxy pattern) for production-readiness.
 
-StellarFarmNFT.sol: An ERC-721 contract where each NFT represents a verified farm, holding its metadata and historical data hashes.
+---
 
-StellarVerifierRegistry.sol: Manages the Trust Circles, CTC staking, and reputation scores for Verifiers.
+## Sample workflows
 
-StellarLendingPool.sol: Handles the DeFi logic for loan deposits (USDC), disbursements, and interest calculations.
+### Farmer onboarding
 
-Backend (Node.js, Python):
+1. Farmer registers (phone number) and draws their farm polygon in the app.
+2. Layer 1 runs: pulls 5y satellite history, computes NDVI baseline and initial score.
+3. A verifier job is posted; a Trust Circle verifies and submits a report.
+4. Upon verification, mint `StellarFarmNFT` and record metadata hash on-chain. Farmer gets a credit line.
 
-Data Processor: Connects to Sentinel Hub APIs to fetch and process satellite imagery. Runs the AI/NDVI analysis model.
+### Verifier flow
 
-Oracle Integrator: Connects to weather/price oracles and the CTC-0 satellite oracle.
+1. Verifier forms a Trust Circle and stakes CTC into `StellarVerifierRegistry`.
+2. Receives job, travels to farm, collects geotagged photos and submits the report.
+3. Report is optionally timestamped by the CTC-0 oracle (or simulated during demo).
+4. On success, the circle is rewarded in CTC; on fraud, the stake is slashed.
 
-Credal API Service: Manages all communication with the Creditcoin ledger for recording credit history.
+---
 
-Frontend (React, Next.js, Ethers.js, Tailwind CSS):
+## Quick setup (dev/demo)
 
-A mobile-first web application with distinct dashboards for Farmers, Verifiers, and Lenders.
+> These commands assume a UNIX-like environment and `node`, `npm`, `python`, and `hardhat` installed.
 
-5. Tokenomics: The CTC Flywheel
-The entire STELLAR economy is designed to create a sustainable "flywheel" that drives utility and demand for the native CTC token.
+1. Clone the repo
 
-Value Inflow (Demand for CTC):
+```bash
+git clone https://github.com/<ORG>/stellar.git
+cd stellar
+```
 
-Staking for Verifiers: The primary demand driver. To participate as a Verifier and earn fees, users must acquire and stake CTC. As the platform grows, more CTC is locked, reducing circulating supply.
+2. Install dependencies
 
-Gas Fees: Every on-chain action (minting an NFT, staking, taking a loan) requires CTC for gas, creating constant baseline demand.
+```bash
+cd contracts && npm install
+cd ../backend && npm install
+cd ../frontend && npm install
+```
 
-Value Outflow (Rewards in CTC):
+3. Start local blockchain for testing
 
-Verifier Fees: Verifiers are paid for their successful, honest work in CTC, rewarding them with the network's native asset.
+```bash
+cd contracts
+npx hardhat node
+# deploy contracts to local network
+npx hardhat run --network localhost scripts/deploy.js
+```
 
-Lender Interest (Optional): Lenders who provide USDC to the loan pool can receive their interest payments in CTC, giving them a stake in the ecosystem's success.
+4. Run mock NDVI pipeline (example)
 
-The Flywheel Effect:
+```bash
+cd backend/data-processor
+python run_demo_pipeline.py --farm-geojson demos/farm1.geojson
+```
 
-More farmers join STELLAR, creating more demand for verification jobs.
+5. Start frontend
 
-More verifiers are needed, so they must buy and stake more CTC.
+```bash
+cd frontend
+npm run dev
+```
 
-This increases the security of the network and locks up CTC.
+---
 
-Higher security attracts more lenders, leading to better loan terms for farmers.
+## Demo strategy (5-week hackathon)
 
-Better terms attract more farmers, restarting the cycle.
+**Weeks 1–2:** Foundation — deploy NFT + lending pool contracts, basic frontend farmer flow, single hard-coded farm demo with satellite score.
 
-6. Risks & Mitigations
-Technical Risk: CTC-0 Oracle API is not publicly available during the hackathon.
+**Week 3:** Trust Layer — VerifierRegistry contract, staking/trust circle logic, verifier submission endpoints and verifier dashboard.
 
-Mitigation: The project is designed to work without it. The CTC-0 integration is a "bonus" feature for Phase 3. The core value is in Layers 1 and 2. We will simulate the oracle response for the demo if needed.
+**Week 4:** Moonshot — Integrate CTC-0 oracle if available; otherwise simulate signed timestamp to show end-to-end proof.
 
-Market Risk: Difficulty in recruiting the initial set of Verifiers.
+**Week 5:** Polish — UI/UX, test data, deploy to testnet, record demo video, finalize pitch.
 
-Mitigation: Partner with local agricultural universities (like Punjab Agricultural University) to recruit students. The "Trust Circle" mechanism also allows them to onboard trusted peers easily.
+---
 
-Execution Risk: The project scope is too ambitious for the 5-week timeline.
+## 3-minute pitch (copy-ready)
 
-Mitigation: The "Hybrid Strategy" build plan is designed specifically to manage this. We will secure a working, prize-winning demo in the first two weeks before moving to more advanced features.
+> Use this verbatim on-stage or in the video demo.
 
-7. Our "Moonshot" Edge (Why We Win)
-Bulletproof Trust. While other projects might propose using satellite data, our multi-layered approach is our killer feature. The combination of AI Analysis + a Human Trust Layer with Skin-in-the-Game + a Cryptographic Stamp from Space creates a level of data integrity that is unmatched. We are not just building another lending app; we are building a foundational trust protocol for real-world assets that can make Creditcoin the global leader in agricultural finance.
+> "This is Baljeet, a farmer in Punjab. He's one of 500 million smallholders who feed the world, yet he can't get a fair loan. His bank says he has no credit history. We say his credit history is written in the Earth itself. STELLAR reads it. With satellite time-series and NDVI we know his productivity. With local Verifiers in Trust Circles we know the data is honest. And with Creditcoin's CTC-0 oracle we get an immutable stamp from space. Now Baljeet’s farm becomes a verified, mintable NFT that lenders accept — unlocking instant credit lines and a permanent on-chain credit history. STELLAR isn’t just an app; it’s the trust protocol for real-world assets."
 
-8. The 5-Week Build Plan (The Hybrid Strategy)
-Weeks 1-2 (The Foundation):
+---
 
-Contracts: Deploy basic StellarFarmNFT and LendingPool contracts.
+## Tokenomics (brief)
 
-Backend: Set up the satellite data pipeline for a single, hard-coded farm location.
+* **Demand:** CTC staking for verifiers, transaction gas, optional interest payments in CTC.
+* **Supply sink:** Staking locks tokens, fees burned or locked as protocol revenue.
+* **Rewards:** Verifier payouts in CTC; early adopter / community incentives.
 
-Frontend: Build the core Farmer workflow: onboard a farm, see a (mock) score, and request a loan.
+---
 
-Goal: A guaranteed working demo.
+## Risks & mitigations (short)
 
-Week 3 (The Trust Layer):
+* **CTC-0 availability:** Simulate for demo; phase 3 integration for production.
+* **Recruiting verifiers:** Partner with local universities and co-ops.
+* **Scalability:** Batch NDVI processing, caching tiles, and region-based job scheduling.
 
-Contracts: Build and deploy the StellarVerifierRegistry with the CTC staking and Trust Circle logic.
+---
 
-Backend: Create the endpoints for Verifiers to submit reports.
+## Roadmap
 
-Frontend: Build the Verifier dashboard and workflow.
+* Phase 0 — Demo-ready (weeks 1–2)
+* Phase 1 — Verifier network & staking (week 3)
+* Phase 2 — Oracle integration & testnet deployment (week 4)
+* Phase 3 — Pilot in Punjab with partner banks & co-ops (Q3)
 
-Goal: Add our key differentiator.
+---
 
-Week 4 (The Moonshot Layer):
+## How to contribute
 
-Backend: If the CTC-0 oracle API is accessible, integrate the timestamping feature into the Verifier report submission process.
+1. Fork the repo
+2. Create a branch `feature/<name>`
+3. Open a PR with tests & README updates
 
-Frontend: Display the "Verified by CTC-0" badge on successful reports.
+Please follow the Code of Conduct in `/docs/CODE_OF_CONDUCT.md`.
 
-Goal: Secure the 1st place prize.
+---
 
-Week 5 (Polish & Pitch):
+## License
 
-Finalize UI/UX, deploy all services to a stable test environment, record the demo video, and perfect the final presentation.
+MIT — see `LICENSE` for details.
 
-9. The 3-Minute Winning Pitch (Demo Script)
-(Scene: Pitch stage, slide showing a photo of a farmer in a field)
+---
 
-Presenter: "This is Baljeet, a farmer in Punjab. He's one of 500 million smallholder farmers who feed the world, yet he can't get a fair loan. His bank says he has no credit history. We say his credit history is written in the Earth itself. We built STELLAR to read it."
+## Contact
 
-(Action: Switch to the live app demo - Farmer's View)
+Lead: Nikhil — `@nikhil` (add preferred email/handle)
+Team: Hi-Influence / TransparencyX contributors
 
-Presenter: "With STELLAR, Baljeet simply outlines his farm on a map. Our engine instantly analyzes years of satellite data to see his farm's real productivity. But a picture isn't enough. To get a loan, data needs to be trusted. That's where our Verifier Network comes in."
+---
 
-(Action: Switch to Verifier's View)
+*Want me to also generate:*
 
-Presenter: "Priya, a local student, gets a verification job. She's part of a 'Trust Circle,' so she and her friends have staked their own CTC as a guarantee of honesty. She visits the farm, confirms the data, and submits her report."
+* Solidity skeletons for the three contracts
+* Hardhat deploy & test scripts
+* A Next.js starter with the Farmer and Verifier dashboards
 
-(Action: Show the report with a "Verified" badge)
-
-Presenter: "But we go one step further. For unforgeable proof, that report is timestamped by Creditcoin's brand new CTC-0 satellite. This data is now bulletproof."
-
-(Action: Switch back to Farmer's View, showing an approved credit line)
-
-Presenter: "With his farm now a trusted, bankable asset, Baljeet has an instant credit line. He can get the capital he needs with a single click. This successful loan is now the first entry in his permanent, global credit history, recorded on Creditcoin via the Credal API."
-
-(Final Slide: STELLAR Logo with Creditcoin Logo)
-
-Presenter: "STELLAR isn't just a lending app; it's a foundational trust protocol for real-world assets. We are building the future of agricultural finance, and we're building it on Creditcoin. Thank you."
+Tell me which one and I’ll add code files next.
